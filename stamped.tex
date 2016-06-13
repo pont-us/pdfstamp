@@ -1,0 +1,32 @@
+% A LaTeX snippet to stamp the pages of a PDF file with
+% a sequence of images. See README.md for details.
+
+\documentclass[10pt]{article}
+
+\usepackage[a4paper,left=0mm,top=0mm,right=0mm,bottom=0mm]{geometry}
+\usepackage{pdfpages}
+\usepackage[absolute]{textpos}
+\usepackage{graphicx}
+\usepackage{everypage}
+
+\setlength{\TPHorizModule}{1mm}% x unit
+\setlength{\TPVertModule}{1mm} % y unit
+\newcommand{\numstamps}{5}     % the number of stamp images
+\newcommand{\stamphsize}{100}  % horizontal size of stamp
+\newcommand{\stampxpos}{100}   % x position of stamp
+\newcommand{\stampypos}{215}   % y position of stamp
+
+\newcounter{stampversion} % counter for current stamp
+\AddEverypageHook{
+\begin{textblock}{\stamphsize}(\stampxpos,\stampypos)
+\addtocounter{stampversion}{1}
+\ifnum\thestampversion>\numstamps\setcounter{stampversion}{1}\fi
+\includegraphics{stamps/\thestampversion .png} % Stamp filename
+\end{textblock}
+}
+
+\begin{document}
+
+\includepdf[pages=-]{file-to-stamp.pdf} % PDF to stamp
+
+\end{document}
